@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="scooters-container">
+    <h1>Доступные самокаты</h1>
+
+    <div class="filters">
+        <form method="get" class="filter-form" id="filter-form">
+            <div class="form-group">
+                <label for="location">Локация:</label>
+                <select id="location" name="location_id">
+                    <option value="">Все локации</option>
+                    {% for location in locations %}
+                    <option value="{{ location.id }}"
+                            {% if location.id== location_id %}selected{% endif %}>
+                        {{ location.address }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="min_battery">Минимальный заряд:</label>
+                <input type="number" id="min_battery" name="min_battery"
+                       min="0" max="100" value="{{ min_battery or '' }}"
+                       placeholder="0">
+            </div>
+
+            <button type="submit" class="btn btn-filter">Применить фильтры</button>
+        </form>
+    </div>
+
+    <div class="scooter-grid">
+        {% for scooter in scooters %}
+        <div class="scooter-card">
+            <div class="scooter-header">
+                <h3>{{ scooter.model }}</h3>
+                <span class="status {{ scooter.status.value }}">
+                {{ scooter.status.value|capitalize }}
+                {% if scooter.status.value == 'AVAILABLE' %}✅{% else %}❌{% endif %}
+            </span>
+            </div>
+
+            <div class="scooter-info">
+                <div class="battery {{ scooter.battery_status }}">
+                    <i class="fas fa-battery-full"></i> Заряд: {{ scooter.battery_level }}%
+                </div>
+
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ scooter.location.address }}
+                </div>
+
+                <div class="tariff">
+                    <i class="fas fa-tag"></i>
+                    Тариф: {{ scooter.tariff.name }} ({{ scooter.tariff.price }}₽/час)
+                </div>
+            </div>
+
+            <div class="scooter-actions">
+                
+                {% if scooter.status.value == 'AVAILABLE' %}
+                <a href="{{ url_for('rent_scooter', scooter_id=scooter.id) }}"
+                   class="btn btn-rent">
+                    Арендовать
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('filter-form').addEventListener('submit', function(event) {
+        // Отключаем стандартное поведение формы
+        event.preventDefault();
+
+        // Создаем новый URL
+        const formData = new FormData(this);
+        const params = new URLSearchParams();
+
+        // Добавляем только непустые поля
+        for (const [key, value] of formData.entries()) {
+            if (value !== "") {
+                params.append(key, value);
+            }
+        }
+
+        // Перенаправляем на новый URL
+        const newUrl = new URL(window.location.href);
+        newUrl.search = params.toString();
+        window.location.replace(newUrl.toString());
+    });
+</script>
+
+{% endblock %}
+

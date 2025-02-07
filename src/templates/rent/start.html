@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="rent-container">
+    <h1>Аренда самоката {{ scooter.model }}</h1>
+
+    <div class="scooter-info">
+        <div class="info-item">
+            <span class="label">Тариф:</span>
+            <span class="value">{{ scooter.tariff.name }} ({{ scooter.tariff.price }}₽/час)</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Заряд:</span>
+            <span class="value battery-status {{ scooter.battery_status }}">
+                {{ scooter.battery_level }}%
+            </span>
+        </div>
+    </div>
+
+    <form method="post" class="rent-form">
+        <div class="form-group">
+            <label for="hours">Количество часов:</label>
+            <input type="number" id="hours" name="hours"
+                   min="1" max="24" value="1" required>
+        </div>
+
+        <div class="price-preview">
+            Итого: <span id="total-price">{{ scooter.tariff.price }}</span>₽
+        </div>
+
+        <button type="submit" class="btn btn-rent">
+            <i class="fas fa-play-circle"></i> Начать аренду
+        </button>
+    </form>
+</div>
+
+<script>
+document.getElementById('hours').addEventListener('input', function() {
+    const pricePerHour = {{ scooter.tariff.price }};
+    document.getElementById('total-price').textContent = this.value * pricePerHour;
+});
+</script>
+{% endblock %}

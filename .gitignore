@@ -1,0 +1,103 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.tar.gz
+*$py.class
+__pycache__/
+
+# Virtual Environment
+env/
+
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Исключаем временные файлы и кэш
+*.py[cod]
+.cache/
+.venv/
+venv/
+ENV/
+
+# Исключаем локальные конфигурационные файлы
+.env
+.env.local
+.env.*.local
+.env.*.backup
+config.yaml
+
+
+# Исключаем логи
+*.log
+logs/
+debug.log
+
+# Исключаем файлы, связанные с IDE
+# IDE / Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Исключаем файлы, связанные с тестированием
+.coverage
+*.cover
+*.py,cover
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+
+# Исключаем файлы, связанные с CI/CD
+.github/
+.gitlab-ci.yml
+
+# Исключаем файлы, связанные с пакетами Python
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+MANIFEST
+
+# Исключаем файлы, связанные с базой данных
+*.sqlite3
+*.db
+db.sqlite3
+*/alembic/versions/
+*/migrations/versions
+
+# Исключаем файлы, связанные с документацией
+docs/_build/
+docs/build/
+
+# Исключаем другие временные файлы
+*.tmp
+*.bak
+*~
+
+
+# Python dependencies
+pip-log.txt
+pip-delete-this-directory.txt
+Pipfile
+Pipfile.lock
+poetry.lock
+
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# MyPy
+.mypy_cache/
+dmypy.json
+dmypy.log
+

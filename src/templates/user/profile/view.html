@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>Профиль пользователя</h1>
+        <div class="profile-actions">
+            <a href="{{ url_for('edit_profile') }}" class="btn btn-edit">Редактировать профиль</a>
+            <a href="{{ url_for('change_password') }}" class="btn btn-change-password">Сменить пароль</a>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="info-item">
+            <span class="label">Имя:</span>
+            <span class="value">{{ user.name }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Фамилия:</span>
+            <span class="value">{{ user.surname }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Телефон:</span>
+            <span class="value">{{ user.phone }}</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

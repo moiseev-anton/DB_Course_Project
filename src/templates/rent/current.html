@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="current-rental">
+    <h1>Текущая аренда</h1>
+
+    <div class="rental-info">
+        <div class="info-item">
+            <span class="label">Самокат:</span>
+            <span class="value">{{ rental.scooter.model }} ({{ rental.scooter.serial_number }})</span>
+        </div>
+
+        <div class="info-item">
+            <span class="label">Осталось времени:</span>
+            <span class="value timer">{{ rental.remaining_time }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="label">Стоимость:</span>
+            <span class="value">{{ rental.total_price }}₽</span>
+        </div>
+    </div>
+
+    <form method="post" action="/rentals/{{ rental.id }}/cancel">
+        <button type="submit" class="btn btn-cancel">
+            <i class="fas fa-stop-circle"></i> Завершить досрочно
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Доступные самокаты – Аренда самокатов{% endblock %}
+
+{% block content %}
+    <h1>Доступные самокаты</h1>
+
+    {% if scooters %}
+        <ul>
+            {% for scooter in scooters %}
+                <li>
+                    <strong>{{ scooter.model }}</strong> (ID: {{ scooter.id }})
+                    - {{ scooter.location }}
+
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет доступных самокатов.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Вернуться на главную</a>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="edit-profile-container">
+    <h2>Редактирование профиля</h2>
+    
+    <form method="post" class="profile-form">
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" 
+                   class="{% if errors.name %}error{% endif %}" required
+                   minlength="2" maxlength="50">
+            {% if errors.name %}<span class="error-message">{{ errors.name }}</span>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="surname">Фамилия:</label>
+            <input type="text" id="surname" name="surname" value="{{ user.surname }}"
+                   class="{% if errors.surname %}error{% endif %}"
+                   minlength="2" maxlength="50">
+            {% if errors.surname %}<span class="error-message">{{ errors.surname }}</span>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" value="{{ user.phone }}"
+                   class="{% if errors.phone %}error{% endif %}"
+                   pattern="\+7\d{10}" required>
+            {% if errors.phone %}<span class="error-message">{{ errors.phone }}</span>{% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Сохранить изменения</button>
+            <a href="{{ url_for('profile') }}" class="btn btn-cancel">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

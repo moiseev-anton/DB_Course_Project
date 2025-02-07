@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="scooter-detail-container">
+    <h1>{{ scooter.model }}</h1>
+
+    <div class="scooter-info">
+        <div class="info-item">
+            <span class="label">Серийный номер:</span>
+            <span class="value">{{ scooter.serial_number }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Статус:</span>
+            <span class="status {{ scooter.status.value }}">
+                {{ scooter.status.value|capitalize }}
+            </span>
+        </div>
+        <div class="info-item">
+            <span class="label">Заряд батареи:</span>
+            <span class="value">{{ scooter.battery_level }}%</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Локация:</span>
+            <span class="value">{{ scooter.location.address }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Тариф:</span>
+            <span class="value">{{ scooter.tariff.name }} ({{ scooter.tariff.price }}₽/час)</span>
+        </div>
+    </div>
+
+    <div class="scooter-actions">
+        {% if scooter.status.value == 'available' %}
+        <a href="{{ url_for('rent_scooter', scooter_id=scooter.id) }}" 
+           class="btn btn-rent">
+            Арендовать
+        </a>
+        {% endif %}
+        <a href="{{ url_for('scooters_list') }}" class="btn btn-back">
+            Назад к списку
+        </a>
+    </div>
+</div>
+{% endblock %}

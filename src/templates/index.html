@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - ScootRent{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Аренда электросамокатов</h1>
+        <p>Быстро, удобно, экологично</p>
+        {% if not user %}
+        <div class="cta-buttons">
+            <a href="/auth/register" class="btn btn-primary">Начать сейчас</a>
+            <a href="/scooters" class="btn btn-secondary">Посмотреть самокаты</a>
+        </div>
+        {% else %}
+        <a href="/scooters" class="btn btn-primary">Арендовать сейчас</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <i class="fas fa-bolt"></i>
+        <h3>Быстрый старт</h3>
+        <p>Начните аренду за 2 минуты</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <h3>100+ точек</h3>
+        <p>Самокаты по всему городу</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Безопасно</h3>
+        <p>Страхование и поддержка 24/7</p>
+    </div>
+</section>
+{% endblock %}
