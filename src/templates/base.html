@@ -18,17 +18,17 @@
             <div class="nav-links" id="navLinks">
                 <a href="/" class="nav-item"><i class="fas fa-home"></i> Главная</a>
 
-                {% if user %}
+                {% if request.state.user %}
                     <div class="user-menu">
                         <span class="user-greeting">
                             <i class="fas fa-user"></i>
-                            {{ user.name }} {{ user.surname }}
+                            {{ request.state.user.name }} {{ request.state.user.surname }}
                         </span>
                         <div class="dropdown-content">
                             <a href="{{ url_for('profile') }}" class="nav-item"><i class="fas fa-id-card"></i> Профиль</a>
                             <a href="{{ url_for('scooters_list') }}" class="nav-item"><i class="fas fa-scooter"></i> Самокаты</a>
                             <a href="/rentals" class="nav-item"><i class="fas fa-history"></i> История аренды</a>
-                            {% if user.role == "admin" %}
+                            {% if request.state.user.role == "ADMIN" %}
                                 <div class="admin-menu">
                                     <a href="/admin/scooters" class="nav-item"><i class="fas fa-tools"></i> Управление парком</a>
                                     <a href="/admin/reports" class="nav-item"><i class="fas fa-chart-line"></i> Аналитика</a>

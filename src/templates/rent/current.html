@@ -1,30 +1,92 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="current-rental">
-    <h1>Текущая аренда</h1>
+<div class="container">
+    <h1>Аренда</h1>
 
     <div class="rental-info">
-        <div class="info-item">
-            <span class="label">Самокат:</span>
-            <span class="value">{{ rental.scooter.model }} ({{ rental.scooter.serial_number }})</span>
-        </div>
+        <p>{{ rental.scooter_model }}</p>
+        <p>{{ rental.status }}</p>
+        <p>{{ rental.total_price }}₽</p>
 
-        <div class="info-item">
-            <span class="label">Осталось времени:</span>
-            <span class="value timer">{{ rental.remaining_time }}</span>
+        {% if rental.status == "ACTIVE" %}
+        <div class="active-rental">
+            <p>Оставшееся время: <span id="timer">{{ rental.remaining_time }}</span></p>
         </div>
-
-        <div class="info-item">
-            <span class="label">Стоимость:</span>
-            <span class="value">{{ rental.total_price }}₽</span>
+        {% elif rental.status == "PENDING" %}
+        <div class="pending-rental">
+            <p>Ожидает оплаты</p>
+            <button id="pay-rental-btn" class="btn-primary">Оплатить</button>
+            <button id="cancel-rental-btn" class="btn-secondary">Отменить</button>
         </div>
+        {% endif %}
     </div>
-
-    <form method="post" action="/rentals/{{ rental.id }}/cancel">
-        <button type="submit" class="btn btn-cancel">
-            <i class="fas fa-stop-circle"></i> Завершить досрочно
-        </button>
-    </form>
 </div>
+
+{% if rental.status == "ACTIVE" %}
+<script>
+    // Таймер для активной аренды
+    function startTimer(duration, display, endedMessage) {
+        let timer = duration, minutes, seconds;
+        const interval = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval); // Останавливаем таймер
+                display.textContent = "00:00"; // Устанавливаем нулевое значение
+                endedMessage.style.display = "block"; // Показываем сообщение о завершении
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        const duration = parseInt("{{ rental.remaining_time }}", 10); // В секундах
+        const display = document.querySelector('#timer');
+        const endedMessage = document.querySelector('#timer-ended-message');
+
+        if (duration > 0) {
+            startTimer(duration, display, endedMessage);
+        } else {
+            display.textContent = "00:00";
+            endedMessage.style.display = "block";
+        }
+    };
+</script>
+{% elif rental.status == "PENDING" %}
+<script>
+    // Обработка оплаты
+    document.getElementById('pay-rental-btn').addEventListener('click', function() {
+        fetch('/rent/{{ rental.id }}/pay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/rent/current_rental';
+            }
+        });
+    });
+
+    // Обработка отмены
+    document.getElementById('cancel-rental-btn').addEventListener('click', function() {
+        fetch('/rent/{{ rental.id }}/cancel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/scooters';
+            }
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}

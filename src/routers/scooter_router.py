@@ -49,11 +49,3 @@ async def scooter_detail(
     )
 
 
-@router.get("/{scooter_id}", name="rent_scooter", response_class=HTMLResponse)
-async def rent_scooter(
-    request: Request,
-    scooter_id: int,
-    uow: UOWDep,
-    scooter_service: ScooterServiceDep,
-):
-    pass

@@ -194,28 +194,28 @@ body {
     padding: 2rem;
 }
 
-.filters {
+.scooters-container .filters {
     margin: 2rem 0;
     padding: 1rem;
     background: var(--background-light);
     border-radius: 10px;
 }
 
-.filter-form {
+.scooters-container .filter-form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     align-items: end;
 }
 
-.scooter-grid {
+.scooters-container .scooter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
 }
 
-.scooter-card {
+.scooters-container .scooter-card {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
@@ -225,80 +225,80 @@ body {
     gap: 1rem;
 }
 
-.scooter-header {
+.scooters-container .scooter-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.status {
+.scooters-container .status {
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     font-size: 0.9rem;
 }
 
-.status.available {
+.scooters-container .status.available {
     background: #27ae60;
     color: white;
 }
 
-.status.unavailable {
+.scooters-container .status.unavailable {
     background: #e74c3c;
     color: white;
 }
 
-.scooter-actions {
+.scooters-container .scooter-actions {
     margin-top: auto;
     display: flex;
     gap: 1rem;
 }
 
-.btn-rent {
+.scooters-container .btn-rent {
     background: var(--secondary-color);
     color: white;
 }
 
-.btn-rent:hover {
+.scooters-container .btn-rent:hover {
     background: #2980b9;
 }
 
 /* Battery status */
-.battery.high { color: #27ae60; }
-.battery.medium { color: #f1c40f; }
-.battery.low { color: #e74c3c; }
+.scooters-container .battery.high { color: #27ae60; }
+.scooters-container .battery.medium { color: #f1c40f; }
+.scooters-container .battery.low { color: #e74c3c; }
 
 /* Status indicators */
-.status.available { color: #27ae60; }
-.status.unavailable { color: #e74c3c; }
-.status.rented { color: #3498db; }
+.scooters-container .status.available { color: #27ae60; }
+.scooters-container .status.unavailable { color: #e74c3c; }
+.scooters-container .status.rented { color: #3498db; }
 
-.filter-form {
+.scooters-container .filter-form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
-.form-group {
+.scooters-container .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.form-group label {
+.scooters-container .form-group label {
     font-weight: 600;
     color: var(--primary-color);
 }
 
-.form-group select,
-.form-group input {
+.scooters-container .form-group select,
+.scooters-container .form-group input {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
 }
 
-.btn-filter {
+.scooters-container .btn-filter {
     align-self: end;
     background: var(--secondary-color);
     color: white;
@@ -308,6 +308,99 @@ body {
     cursor: pointer;
 }
 
-.btn-filter:hover {
+.scooters-container .btn-filter:hover {
     background: #2980b9;
 }
+
+.rental-page {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rental-page .scooter-info {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.rental-page .scooter-info h2 {
+    margin: 0;
+    font-size: 1.8em;
+    color: var(--primary-color);
+}
+
+.rental-page .scooter-info p {
+    margin: 5px 0;
+    color: var(--text-dark);
+}
+
+.rental-page .rental-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rental-page .time-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.rental-page .time-button {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.rental-page .time-button:hover {
+    background: #2980b9;
+}
+
+.rental-page .time-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 10px 20px;
+    background: #fff;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.rental-page .calculation {
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: var(--text-dark);
+}
+
+.rental-page .calculation span {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.rental-page .btn-submit {
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.rental-page .btn-submit:hover {
+    background: #2980b9;
+}
+

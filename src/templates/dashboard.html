@@ -1,0 +1,69 @@
+<!-- templates/dashboard.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container dashboard">
+    <h1>Личный кабинет</h1>
+
+    {% if active_rental %}
+    <div class="active-rental">
+        <h2>Активная аренда</h2>
+        <p>Самокат: {{ active_rental.scooter.model }} ({{ active_rental.scooter.serial_number }})</p>
+        <p>Оставшееся время: <span id="timer">{{ active_rental.duration }}</span></p>
+        <p>Стоимость: {{ active_rental.total_price }}₽</p>
+        <button id="end-rental-btn" class="btn-submit">Завершить аренду</button>
+    </div>
+    {% else %}
+    <div class="no-active-rental">
+        <p>У вас нет активной аренды. <a href="/scooters">Найти самокат</a></p>
+    </div>
+    {% endif %}
+
+    <div class="dashboard-links">
+        <a href="/rent/history" class="btn-link">История аренд</a>
+        <a href="/profile" class="btn-link">Редактировать профиль</a>
+    </div>
+</div>
+
+{% if active_rental %}
+<script>
+    // Таймер для активной аренды
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        let duration = parseInt("{{ active_rental.duration }}", 10) * 60; // Переводим минуты в секунды
+        let display = document.querySelector('#timer');
+        startTimer(duration, display);
+    };
+
+    // Обработка досрочного завершения аренды
+    document.getElementById('end-rental-btn').addEventListener('click', function() {
+        fetch('/rent/{{ active_rental.id }}/end', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/dashboard';
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

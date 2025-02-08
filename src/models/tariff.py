@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Numeric, Interval
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from database import Base
 
@@ -14,3 +15,6 @@ class Tariff(Base):
 
     scooters = relationship("Scooter", backref="tariff")  # Связь с самокатами
 
+    @hybrid_property
+    def unit_minutes(self):
+        return self.unit.total_seconds() // 60

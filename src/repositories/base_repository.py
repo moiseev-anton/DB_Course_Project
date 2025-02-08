@@ -50,20 +50,14 @@ class SQLAlchemyRepository[T, IDType](AbstractRepository[IDType]):
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
-    @check_model_set
     async def get_one_with_related(
-            self,
-            filter_by: Optional[List] = None,
-            options: Optional[List] = None,
-    ) -> T:
-        query = select(self.model)
-
-        if filter_by:
-            query = query.filter(*filter_by)
-
+        self,
+        filter_by: Optional[List] = None,
+        options: Optional[List] = None
+    ) -> Optional[T]:
+        query = select(self.model).filter(*filter_by) if filter_by else select(self.model)
         if options:
             query = query.options(*options)
-
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
@@ -76,20 +70,16 @@ class SQLAlchemyRepository[T, IDType](AbstractRepository[IDType]):
         result = await self.session.execute(query)
         return list(result.scalars())
 
-    @check_model_set
     async def get_all_with_related(
-            self,
-            filter_by: Optional[List] = None,
-            options: Optional[List] = None,
+        self,
+        filter_by: Optional[List] = None,
+        options: Optional[List] = None
     ) -> List[T]:
         query = select(self.model)
-
         if filter_by:
             query = query.filter(*filter_by)
-
         if options:
             query = query.options(*options)
-
         result = await self.session.execute(query)
         return list(result.scalars())
 

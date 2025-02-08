@@ -52,7 +52,6 @@ class ScooterRead(BaseModel):
 class RentalCreate(BaseModel):
     user_id: int
     scooter_id: int
-    start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
     total_price: Optional[float] = None
 
@@ -61,7 +60,6 @@ class RentalRead(BaseModel):
     id: int
     user_id: int
     scooter_id: int
-    start_time: datetime
     end_time: Optional[datetime]
     total_price: Optional[float]
 

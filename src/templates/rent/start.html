@@ -1,43 +1,62 @@
+<!-- templates/rental_form.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<div class="rent-container">
-    <h1>Аренда самоката {{ scooter.model }}</h1>
-
+<div class="container rental-page">
     <div class="scooter-info">
-        <div class="info-item">
-            <span class="label">Тариф:</span>
-            <span class="value">{{ scooter.tariff.name }} ({{ scooter.tariff.price }}₽/час)</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Заряд:</span>
-            <span class="value battery-status {{ scooter.battery_status }}">
-                {{ scooter.battery_level }}%
-            </span>
-        </div>
+        <h2>{{ scooter.model }} ({{ scooter.serial_number }})</h2>
+        <p>Заряд: {{ scooter.battery_level }}%</p>
+        <p>Тариф: {{ tariff.name }} - {{ tariff.price }}₽ за {{ tariff.unit }}</p>
     </div>
 
-    <form method="post" class="rent-form">
-        <div class="form-group">
-            <label for="hours">Количество часов:</label>
-            <input type="number" id="hours" name="hours"
-                   min="1" max="24" value="1" required>
+    <form method="post" class="rental-form" action="{{ url_for('create_rental', scooter_id=scooter.id) }}">
+        <!-- Скрытое поле для unit_count -->
+        <input type="hidden" id="unit_count" name="unit_count" value="1">
+
+        <div class="time-selector">
+            <button type="button" class="time-button" onclick="changeUnits(-1)">-</button>
+            <div class="time-display">
+                <span id="total_time">0</span>
+            </div>
+            <button type="button" class="time-button" onclick="changeUnits(1)">+</button>
         </div>
 
-        <div class="price-preview">
-            Итого: <span id="total-price">{{ scooter.tariff.price }}</span>₽
+        <div class="calculation">
+            <p>Стоимость: <span id="total_price">0</span>₽</p>
         </div>
 
-        <button type="submit" class="btn btn-rent">
-            <i class="fas fa-play-circle"></i> Начать аренду
-        </button>
+        <button type="submit" class="btn-submit">Арендовать</button>
     </form>
 </div>
 
 <script>
-document.getElementById('hours').addEventListener('input', function() {
-    const pricePerHour = {{ scooter.tariff.price }};
-    document.getElementById('total-price').textContent = this.value * pricePerHour;
-});
+    const unitMinutes = {{ unit_minutes }};
+    const pricePerUnit = {{ tariff.price }};
+
+    function formatTime(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hours}ч ${mins}м`;
+    }
+
+    function updateTotals() {
+        const units = parseInt(document.getElementById('unit_count').value);
+        const totalMinutes = units * unitMinutes;
+        const totalPrice = units * pricePerUnit;
+
+        document.getElementById('total_time').textContent = formatTime(totalMinutes);
+        document.getElementById('total_price').textContent = totalPrice.toFixed(2);
+    }
+
+    function changeUnits(step) {
+        const input = document.getElementById('unit_count');
+        let newValue = parseInt(input.value) + step;
+        newValue = Math.max(1, Math.min(newValue, {{ max_units }}));
+        input.value = newValue;
+        updateTotals();
+    }
+
+    // Инициализация при загрузке
+    window.onload = updateTotals;
 </script>
 {% endblock %}

@@ -31,7 +31,7 @@
 
     <div class="scooter-actions">
         {% if scooter.status.value == 'available' %}
-        <a href="{{ url_for('rent_scooter', scooter_id=scooter.id) }}" 
+        <a href="{{ url_for('create_rental', scooter_id=scooter.id) }}"
            class="btn btn-rent">
             Арендовать
         </a>

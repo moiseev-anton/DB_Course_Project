@@ -13,7 +13,7 @@
                     <option value="">Все локации</option>
                     {% for location in locations %}
                     <option value="{{ location.id }}"
-                            {% if location.id== location_id %}selected{% endif %}>
+                            {% if location.id == location_id %}selected{% endif %}>
                         {{ location.address }}
                     </option>
                     {% endfor %}
@@ -61,7 +61,7 @@
             <div class="scooter-actions">
                 
                 {% if scooter.status.value == 'AVAILABLE' %}
-                <a href="{{ url_for('rent_scooter', scooter_id=scooter.id) }}"
+                <a href="{{ url_for('create_rental', scooter_id=scooter.id) }}"
                    class="btn btn-rent">
                     Арендовать
                 </a>

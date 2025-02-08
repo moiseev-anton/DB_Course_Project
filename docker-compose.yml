@@ -3,11 +3,11 @@ services:
     image: postgres:16-alpine
     container_name: rental_postgres_db
     env_file:
-      - .env  # Загружаем переменные окружения из .env
+      - .env
     volumes:
-      - rental_postgres_data:/var/lib/postgresql/data  # Уникальный том
+      - rental_postgres_data:/var/lib/postgresql/data
     ports:
-      - "5434:5432"  # Прокидываем внешний порт 5434 на внутренний 5432
+      - "5434:5432"
     networks:
       - scooter_network
 
@@ -16,18 +16,18 @@ services:
     depends_on:
       - rentaldb
     env_file:
-      - .env  # Передаем те же переменные окружения для приложения
+      - .env
     ports:
-      - "8020:8000"  # Прокидываем внешний порт 8020 на внутренний 8000
+      - "8020:8000"
     networks:
       - scooter_network
     volumes:
-      - .:/src  # Бинд-маунт для локальных файлов приложения
+      - .:/src # бинд-маунт (отключать при деплое)
 
 networks:
   scooter_network:
     driver: bridge
 
 volumes:
-  rental_postgres_data:  # Уникальный том для текущего проекта
+  rental_postgres_data:
     driver: local

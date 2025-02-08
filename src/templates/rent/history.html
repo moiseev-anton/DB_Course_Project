@@ -17,7 +17,6 @@
         <tbody>
             {% for rental in rentals %}
             <tr>
-                <td>{{ rental.start_time|datetime }}</td>
                 <td>{{ rental.scooter.model }}</td>
                 <td>{{ rental.duration }} ч</td>
                 <td>{{ rental.total_price }}₽</td>
