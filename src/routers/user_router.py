@@ -69,7 +69,7 @@ async def change_password(
 ):
     try:
         user = await user_service.change_password(uow, user.id, form_data)
-        return RedirectResponse("?password_changed=1", status_code=303)
+        return RedirectResponse("/user/profile", status_code=303)
     except Exception as e:
         errors = e.errors() if hasattr(e, 'errors') else [{'msg': str(e)}]
         return templates.TemplateResponse(
@@ -81,23 +81,3 @@ async def change_password(
             status_code=400
         )
 
-@router.get("/dashboard", name='dashboard',)
-async def dashboard(
-    request: Request,
-    user: UserAuthDep,
-    uow: UOWDep,
-    user_service: UserServiceDep
-):
-    try:
-        user = await user_service.change_password(uow, user.id, form_data)
-        return RedirectResponse("?password_changed=1", status_code=303)
-    except Exception as e:
-        errors = e.errors() if hasattr(e, 'errors') else [{'msg': str(e)}]
-        return templates.TemplateResponse(
-            "user/profile/change_password.html",
-            {
-                "request": request,
-                "errors": {error.get('loc', ['unknown'])[0]: error.get('msg', 'Unknown error') for error in errors}
-            },
-            status_code=400
-        )

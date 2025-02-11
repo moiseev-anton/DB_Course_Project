@@ -14,9 +14,15 @@ class ScooterStatus(str, Enum):
     RESERVED = "RESERVED"
 
 
-class ScooterBase(BaseModel):
-    model: str = Field(..., min_length=2, max_length=100)
-    serial_number: str = Field(..., min_length=5, max_length=50)
+class ScooterInfo(BaseModel):
+    model: str
+    serial_number: str
+
+    class Config:
+        from_attributes = True
+
+
+class ScooterBase(ScooterInfo):
     status: ScooterStatus = ScooterStatus.AVAILABLE
     battery_level: float = Field(..., ge=0, le=100)
     location_id: Optional[int] = None
@@ -45,13 +51,13 @@ class ScooterDisplay(ScooterBase):
     is_available: bool = Field(default=False, exclude=True)
     battery_status: str = Field(default="unknown", exclude=True)
 
-    @field_validator('is_available', mode='before')
+    @field_validator("is_available", mode="before")
     def set_is_available(cls, v, values):
-        return values.get('status') == ScooterStatus.AVAILABLE
+        return values.get("status") == ScooterStatus.AVAILABLE
 
-    @field_validator('battery_status', mode='before')
+    @field_validator("battery_status", mode="before")
     def set_battery_status(cls, v, values):
-        battery = values.get('battery_level', 0)
+        battery = values.get("battery_level", 0)
         if battery >= 80:
             return "high"
         elif battery >= 30:

@@ -16,8 +16,6 @@
             </a>
 
             <div class="nav-links" id="navLinks">
-                <a href="/" class="nav-item"><i class="fas fa-home"></i> Главная</a>
-
                 {% if request.state.user %}
                     <div class="user-menu">
                         <span class="user-greeting">
@@ -27,11 +25,10 @@
                         <div class="dropdown-content">
                             <a href="{{ url_for('profile') }}" class="nav-item"><i class="fas fa-id-card"></i> Профиль</a>
                             <a href="{{ url_for('scooters_list') }}" class="nav-item"><i class="fas fa-scooter"></i> Самокаты</a>
-                            <a href="/rentals" class="nav-item"><i class="fas fa-history"></i> История аренды</a>
+                            <a href="{{ url_for('user_rental_history') }}" class="nav-item"><i class="fas fa-history"></i> История аренды</a>
                             {% if request.state.user.role == "ADMIN" %}
                                 <div class="admin-menu">
-                                    <a href="/admin/scooters" class="nav-item"><i class="fas fa-tools"></i> Управление парком</a>
-                                    <a href="/admin/reports" class="nav-item"><i class="fas fa-chart-line"></i> Аналитика</a>
+                                    <a href="/admin/analytics" class="nav-item"><i class="fas fa-chart-line"></i> Аналитика</a>
                                 </div>
                             {% endif %}
                             <a href="/logout" class="nav-item logout"><i class="fas fa-sign-out-alt"></i> Выйти</a>

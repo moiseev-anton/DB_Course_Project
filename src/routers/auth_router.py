@@ -10,7 +10,9 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.post("/login")
-async def login(request: Request, credentials: LoginForm, user_service: UserServiceDep, uow: UOWDep):
+async def login(
+    request: Request, credentials: LoginForm, user_service: UserServiceDep, uow: UOWDep
+):
     # Ваш код для аутентификации
     try:
         user = await user_service.authenticate_user(uow, credentials)
@@ -23,7 +25,7 @@ async def login(request: Request, credentials: LoginForm, user_service: UserServ
         return templates.TemplateResponse(
             "/login.html",
             {"request": request, "error": str(e)},
-            status_code=status.HTTP_401_UNAUTHORIZED
+            status_code=status.HTTP_401_UNAUTHORIZED,
         )
 
 
@@ -45,20 +47,19 @@ async def register_page(request: Request):
 
 @router.post("/register")
 async def register(
-        request: Request,
-        credentials: RegisterForm,
-        user_service: UserServiceDep,
-        uow: UOWDep
+    request: Request,
+    credentials: RegisterForm,
+    user_service: UserServiceDep,
+    uow: UOWDep,
 ):
     try:
         new_user = await user_service.add_user(uow, credentials)
 
         # Записываем пользователя в сессию
         request.session["user_id"] = str(new_user.id)
-        request.session["role"] = new_user.role.value
+        request.session["role"] = new_user.role
 
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
     except ValueError as e:
         return {"error": str(e)}
-

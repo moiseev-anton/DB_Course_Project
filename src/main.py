@@ -6,6 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from routers import router as all_routers
 from config import settings
 from middleware import AuthMiddleware
+
 # Инициализация FastAPI
 app = FastAPI()
 
@@ -18,7 +19,6 @@ app.add_middleware(
     https_only=False,  # Включить True для продакшена
     max_age=86400  # Время жизни cookie (24 часа)
 )
-
 
 app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
 

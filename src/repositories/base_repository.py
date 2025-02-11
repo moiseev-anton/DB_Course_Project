@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from functools import wraps
-from typing import Type, List, Optional, Dict
+from typing import Type, List, Optional
 
-from sqlalchemy import select, insert, update, delete
+from sqlalchemy import select, insert, update, delete, Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -51,37 +51,35 @@ class SQLAlchemyRepository[T, IDType](AbstractRepository[IDType]):
         return result.scalar_one_or_none()
 
     async def get_one_with_related(
-        self,
-        filter_by: Optional[List] = None,
-        options: Optional[List] = None
+        self, filter_by: Optional[List] = None, options: Optional[List] = None
     ) -> Optional[T]:
-        query = select(self.model).filter(*filter_by) if filter_by else select(self.model)
+        query = (
+            select(self.model).filter(*filter_by) if filter_by else select(self.model)
+        )
         if options:
             query = query.options(*options)
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
     @check_model_set
-    async def get_all(self, **filter_by) -> List[T]:
+    async def get_all(self, **filter_by) -> Sequence[T]:
         query = select(self.model)
         if filter_by:
             query = query.filter_by(**filter_by)
 
         result = await self.session.execute(query)
-        return list(result.scalars())
+        return result.scalars().all()
 
     async def get_all_with_related(
-        self,
-        filter_by: Optional[List] = None,
-        options: Optional[List] = None
-    ) -> List[T]:
+        self, filter_by: Optional[List] = None, options: Optional[List] = None
+    ) -> Sequence[T]:
         query = select(self.model)
         if filter_by:
             query = query.filter(*filter_by)
         if options:
             query = query.options(*options)
         result = await self.session.execute(query)
-        return list(result.scalars())
+        return result.scalars().all()
 
     @check_model_set
     async def create_one(self, data: dict) -> T:

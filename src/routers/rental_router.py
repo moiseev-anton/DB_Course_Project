@@ -1,7 +1,14 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
-from dependencies import UOWDep, ScooterServiceDep, RentalServiceDep, UserAuthDep, RentalForm
+from dependencies import (
+    UOWDep,
+    ScooterServiceDep,
+    RentalServiceDep,
+    UserAuthDep,
+    RentalForm,
+)
 from fastapi.templating import Jinja2Templates
+from typing import Optional
 
 
 router = APIRouter()
@@ -10,11 +17,11 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/create/{scooter_id}", name="create_rental", response_class=HTMLResponse)
 async def create_rental(
-        request: Request,
-        scooter_id: int,
-        scooter_service: ScooterServiceDep,
-        uow: UOWDep,
-        user: UserAuthDep
+    request: Request,
+    scooter_id: int,
+    scooter_service: ScooterServiceDep,
+    uow: UOWDep,
+    user: UserAuthDep,
 ):
     scooter = await scooter_service.get_available_scooter(uow, scooter_id)
     tariff = scooter.tariff
@@ -27,23 +34,25 @@ async def create_rental(
             "scooter": scooter,
             "tariff": tariff,
             "unit_minutes": unit_minutes,
-            "max_units": 24 * 60 // unit_minutes  # Макс 24 часа
-        }
+            "max_units": 24 * 60 // unit_minutes,  # Макс 24 часа
+        },
     )
 
 
 @router.post("/create/{scooter_id}", name="create_rental")
 async def create_rental(
-        scooter_id: int,
-        form_data: RentalForm,
-        rental_service: RentalServiceDep,
-        uow: UOWDep,
-        user: UserAuthDep
+    scooter_id: int,
+    form_data: RentalForm,
+    rental_service: RentalServiceDep,
+    uow: UOWDep,
+    user: UserAuthDep,
 ):
     async with uow:
         try:
             # Получаем самокат с тарифом
-            rental_id = await rental_service.create_rental(uow, user.id, scooter_id, form_data)
+            rental_id = await rental_service.create_rental(
+                uow, user.id, scooter_id, form_data
+            )
 
             return RedirectResponse(f"/", status_code=303)
 
@@ -54,31 +63,23 @@ async def create_rental(
 
 @router.get("/current_rental/", name="current_rental", response_class=HTMLResponse)
 async def current_rental(
-        request: Request,
-        rental_service: RentalServiceDep,
-        uow: UOWDep,
-        user: UserAuthDep
+    request: Request, rental_service: RentalServiceDep, uow: UOWDep, user: UserAuthDep
 ):
     rental = await rental_service.get_current_rental(uow, user.id)
     if rental:
         return templates.TemplateResponse(
-            "rent/current.html",
-            {
-                "request": request,
-                "rental": rental,
-                "user": user
-            }
+            "rent/current.html", {"request": request, "rental": rental, "user": user}
         )
     return RedirectResponse(url="/scooters", status_code=303)
 
 
 @router.post("/{rental_id}/pay", name="pay_rent", response_class=HTMLResponse)
 async def payment(
-        rental_id: int,
-        request: Request,
-        rental_service: RentalServiceDep,
-        uow: UOWDep,
-        user: UserAuthDep,
+    rental_id: int,
+    request: Request,
+    rental_service: RentalServiceDep,
+    uow: UOWDep,
+    user: UserAuthDep,
 ):
     await rental_service.pay_rent(uow, rental_id)
     return RedirectResponse(url="/", status_code=303)
@@ -86,11 +87,32 @@ async def payment(
 
 @router.post("/{rental_id}/cancel", name="cancel_rent", response_class=HTMLResponse)
 async def cancel(
-        rental_id: int,
-        request: Request,
-        rental_service: RentalServiceDep,
-        uow: UOWDep,
-        user: UserAuthDep,
+    rental_id: int,
+    request: Request,
+    rental_service: RentalServiceDep,
+    uow: UOWDep,
+    user: UserAuthDep,
 ):
     await rental_service.cancel_rent(uow, rental_id)
     return RedirectResponse(url="/", status_code=303)
+
+
+@router.get("/history", name="user_rental_history", response_class=HTMLResponse)
+async def rental_history(
+    request: Request,
+    user: UserAuthDep,
+    rental_service: RentalServiceDep,
+    uow: UOWDep,
+    status: Optional[str] = Query(None),
+):
+    rentals = await rental_service.get_user_rental_history(uow, user.id, status)
+
+    return templates.TemplateResponse(
+        "rent/history.html",
+        {
+            "request": request,
+            "user": user,
+            "rentals": rentals,
+            "selected_status": status,
+        },
+    )

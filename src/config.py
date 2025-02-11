@@ -14,22 +14,6 @@ class Settings(BaseSettings):
     STATIC_DIR: str = os.path.join(os.path.dirname(__file__), "static")
 
     SECRET_KEY: str
-    # JWT_ALGORITHM: str
-    # JWT_ACCESS_TOKEN_EXPIRES: int
-    # JWT_REFRESH_TOKEN_EXPIRES: int
-    #
-    # # Заголовки
-    # JWT_HEADER_NAME: str
-    # JWT_HEADER_TYPE: str
-    #
-    # # Cookies (только для refresh-токена)
-    # JWT_REFRESH_COOKIE_NAME: str
-    # JWT_REFRESH_COOKIE_PATH: str
-    # JWT_COOKIE_SAMESITE: str
-    # JWT_COOKIE_SECURE: bool
-    #
-    # # Автообновление refresh-токена
-    # JWT_IMPLICIT_REFRESH_DELTATIME: int
 
     @property
     def DATABASE_URL_asyncpg(self):
@@ -45,26 +29,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-# auth_config = AuthXConfig(
-#     JWT_SECRET_KEY=settings.JWT_SECRET_KEY,
-#     JWT_ALGORITHM=settings.JWT_ALGORITHM,
-#     JWT_ACCESS_TOKEN_EXPIRES=timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRES),
-#     JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRES),
-#
-#     # Access-токен передаётся в заголовке
-#     JWT_HEADER_NAME=settings.JWT_HEADER_NAME,
-#     JWT_HEADER_TYPE=settings.JWT_HEADER_TYPE,
-#
-#     # Refresh-токен хранится в HttpOnly Cookie
-#     JWT_REFRESH_COOKIE_NAME=settings.JWT_REFRESH_COOKIE_NAME,
-#     JWT_REFRESH_COOKIE_PATH=settings.JWT_REFRESH_COOKIE_PATH,
-#     JWT_COOKIE_SAMESITE=settings.JWT_COOKIE_SAMESITE,
-#     JWT_COOKIE_SECURE=settings.JWT_COOKIE_SECURE,
-#
-#     # Автообновление refresh-токена
-#     JWT_IMPLICIT_REFRESH_DELTATIME=timedelta(minutes=settings.JWT_IMPLICIT_REFRESH_DELTATIME),
-# )
 
 # class DevelopmentConfig(Config):
 #     """Конфигурация для разработки."""

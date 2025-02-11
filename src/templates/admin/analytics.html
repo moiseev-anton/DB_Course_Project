@@ -1,0 +1,125 @@
+<!-- templates/admin_analytics.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="analytics-container">
+    <!-- Фильтры -->
+    <div class="filters">
+        <form method="get" action="/admin/analytics">
+            <div class="date-filters">
+                <label>
+                    Начало:
+                    <input type="date"
+                           name="start_date"
+                           value="{{ date_range.start_date }}"
+                           max="{{ date_range.end_date }}">
+                </label>
+
+                <label>
+                    Конец:
+                    <input type="date"
+                           name="end_date"
+                           value="{{ date_range.end_date }}"
+                           min="{{ date_range.start_date }}"
+                           max="{{ today.isoformat() }}">
+                </label>
+
+                <button type="submit" class="btn-filter">
+                    <i class="fas fa-filter"></i> Применить
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Основные метрики -->
+    <div class="metrics-grid">
+        <!-- Добавляем новые метрики -->
+        <div class="metric-card">
+            <h3>Всего аренд</h3>
+            <p>{{ financial_report.total_rentals }}</p>
+        </div>
+        <div class="metric-card">
+            <h3>Общий доход</h3>
+            <p>{{ financial_report.total_income|round(2) }}₽</p>
+        </div>
+        <div class="metric-card">
+            <h3>Ожидает оплаты</h3>
+            <p>{{ financial_report.pending_payments|round(2) }}₽</p>
+        </div>
+        <div class="metric-card">
+            <h3>Отменено аренд</h3>
+            <p>{{ financial_report.canceled_rentals }}</p>
+        </div>
+    </div>
+
+    <!-- Таблица использования самокатов -->
+    <div class="report-section">
+        <h2>Использование самокатов</h2>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Самокат</th>
+                <th>Аренд</th>
+                <th>Часов работы</th>
+                <th>Выручка</th>
+                <th>Средний заряд</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for scooter in scooter_usage %}
+            <tr>
+                <td>{{ scooter.model }} (#{{ scooter.scooter_id }})</td>
+                <td>{{ scooter.total_rentals }}</td>
+                <td>{{ (scooter.total_hours)|round(1) }}</td>
+                <td>{{ (scooter.total_revenue)|round(2) }}₽</td>
+                <td>{{ scooter.avg_battery_after|round(1) }}%</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Графики -->
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="incomeChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // График распределения статусов
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Оплаченные', 'Отмененные'],
+            datasets: [{
+                data: [
+                    {{ financial_report.total_rentals - financial_report.canceled_rentals }},
+                    {{ financial_report.canceled_rentals }}
+                ],
+                backgroundColor: ['#4CAF50', '#FFC107',]
+            }]
+        }
+    });
+
+
+    // График доходов по времени
+    new Chart(document.getElementById('incomeChart'), {
+        type: 'line',
+        data: {
+            labels: {{ rental_report.daily_income|map(attribute='date')|list|tojson }},  // Даты как ключи
+            datasets: [{
+                label: 'Доход',
+                data: {{ rental_report.daily_income|map(attribute='amount')|list|tojson }},  // Значения как суммы
+                borderColor: '#4CAF50'
+            }]
+        }
+    });
+</script>
+{% endblock %}

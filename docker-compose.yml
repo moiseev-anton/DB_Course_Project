@@ -28,6 +28,7 @@ networks:
   scooter_network:
     driver: bridge
 
+
 volumes:
   rental_postgres_data:
     driver: local

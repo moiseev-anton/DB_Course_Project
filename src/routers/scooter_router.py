@@ -21,7 +21,9 @@ async def scooters_list(
     min_battery: Optional[int] = Query(None, ge=0, le=100),
 ):
     locations = await location_service.get_all_locations(uow)
-    scooters = await scooter_service.get_available_scooters(uow, location_id, min_battery)
+    scooters = await scooter_service.get_available_scooters(
+        uow, location_id, min_battery
+    )
     return templates.TemplateResponse(
         "scooters/list.html",
         {
@@ -30,8 +32,8 @@ async def scooters_list(
             "locations": locations,
             "user": request.state.user,
             "location_id": location_id,
-            "min_battery": min_battery
-        }
+            "min_battery": min_battery,
+        },
     )
 
 
@@ -44,8 +46,5 @@ async def scooter_detail(
 ):
     scooter = await scooter_service.get_available_scooter(uow, scooter_id)
     return templates.TemplateResponse(
-        "scooters/detail.html",
-        {"request": request, "scooter": scooter}
+        "scooters/detail.html", {"request": request, "scooter": scooter}
     )
-
-
