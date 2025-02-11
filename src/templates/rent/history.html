@@ -7,7 +7,7 @@
 
     <!-- Фильтр по статусу -->
     <div class="filters">
-        <form method="get" action="/rent/history">
+        <form method="get" id="filter-form"  action="/rent/history">
             <label for="status">Статус:</label>
             <select name="status" id="status">
                 <option value="">Все</option>
@@ -16,7 +16,7 @@
                 <option value="CANCELLED" {% if selected_status == "CANCELLED" %}selected{% endif %}>Отмененные</option>
                 <option value="PENDING" {% if selected_status == "PENDING" %}selected{% endif %}>Ожидающие оплаты</option>
             </select>
-            <button type="submit" class="btn-filter">Применить</button>
+            <button type="submit" class="btn btn-filter">Применить</button>
         </form>
     </div>
 
@@ -38,7 +38,7 @@
                     <td>{{ rental.scooter.model }} ({{ rental.scooter.serial_number }})</td>
                     <td>{{ rental.status }}</td>
                     <td>{{ rental.duration_str }}</td>
-                    <td>{{ rental.price }}₽</td>
+                    <td>{{ rental.total_price }}₽</td>
                     <td>{{ rental.end_time.strftime('%H:%M %d.%m.%Y') if rental.end_time else "-" }}</td>
                 </tr>
                 {% endfor %}
@@ -46,4 +46,7 @@
         </table>
     </div>
 </div>
+
+<script src="/static/js/filter.js"></script>
+
 {% endblock %}

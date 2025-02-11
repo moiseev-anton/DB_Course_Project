@@ -1,38 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="login-container">
     {% if not user %}
     <div class="welcome-section">
-        <h1>Cервис аренды электросамокатов</h1>
-        <section class="features">
+        <h1>Сервис аренды электросамокатов</h1>
+
+        <div class="features-grid">
             <div class="feature-card">
-                <i class="fas fa-bolt"></i>
+                <i class="fas fa-bolt feature-icon"></i>
                 <h3>Быстрый старт</h3>
                 <p>Начните аренду за 2 минуты</p>
             </div>
-        </section>
-        <div class="auth-forms">
-            <form method="post" action="/login" class="login-form">
-                <h2>Вход</h2>
+            <div class="feature-card">
+                <i class="fas fa-map-marker-alt feature-icon"></i>
+                <h3>Удобные локации</h3>
+                <p>Самокаты рядом с вами</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>Безопасность</h3>
+                <p>Надежная защита данных</p>
+            </div>
+        </div>
+
+        <div class="auth-section">
+            <form method="post" action="/login" class="auth-form">
+                <h2>Вход в аккаунт</h2>
+
                 <div class="form-group">
                     <label for="phone">Телефон:</label>
                     <input type="text" id="phone" name="phone" required>
                 </div>
+
                 <div class="form-group">
                     <label for="password">Пароль:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn-submit">Войти</button>
+
+                <button type="submit" class="btn-login">Войти</button>
             </form>
-            <div class="register-link">
-                <p>Еще нет аккаунта? <a href="/register">Зарегистрируйтесь</a></p>
+
+            <div class="auth-links">
+                <p>Еще нет аккаунта? <a href="/register" class="auth-link">Зарегистрируйтесь</a></p>
             </div>
         </div>
     </div>
     {% else %}
     <script>
-        window.location.href = "/dashboard";
+        window.location.href = "/";
     </script>
     {% endif %}
 </div>

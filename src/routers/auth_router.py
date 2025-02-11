@@ -42,7 +42,9 @@ async def logout(request: Request):
 
 @router.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse(
+        "register.html", {"request": request, "errors": {}}
+    )
 
 
 @router.post("/register")
@@ -61,5 +63,16 @@ async def register(
 
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
 
-    except ValueError as e:
-        return {"error": str(e)}
+    except Exception as e:
+        errors = e.errors() if hasattr(e, "errors") else [{"msg": str(e)}]
+        return templates.TemplateResponse(
+            "register.html",
+            {
+                "request": request,
+                "errors": {
+                    error.get("loc", ["unknown"])[0]: error.get("msg", "Unknown error")
+                    for error in errors
+                },
+            },
+            status_code=400,
+        )

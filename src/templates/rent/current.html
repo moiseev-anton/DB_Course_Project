@@ -1,23 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>Аренда</h1>
+<div class="rental-container">
+    <h1>Текущая аренда</h1>
 
-    <div class="rental-info">
-        <p>{{ rental.scooter_model }}</p>
-        <p>{{ rental.status }}</p>
-        <p>{{ rental.total_price }}₽</p>
+    <div class="rental-details">
+        <div class="rental-info">
+            <div class="info-item">
+                <span class="label">Самокат:</span>
+                <span class="value">{{ rental.scooter_model }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Статус:</span>
+                <span class="value">{{ rental.status }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Стоимость:</span>
+                <span class="value">{{ rental.total_price }}₽</span>
+            </div>
+        </div>
 
         {% if rental.status == "ACTIVE" %}
-        <div class="active-rental">
-            <p>Оставшееся время: <span id="timer">{{ rental.remaining_time }}</span></p>
+        <div class="rental-timer">
+            <p>Оставшееся время:</p>
+            <div id="timer" class="timer">{{ rental.remaining_time }}</div>
+            <p id="timer-ended-message" class="timer-ended">Время аренды истекло!</p>
         </div>
         {% elif rental.status == "PENDING" %}
-        <div class="pending-rental">
-            <p>Ожидает оплаты</p>
-            <button id="pay-rental-btn" class="btn-primary">Оплатить</button>
-            <button id="cancel-rental-btn" class="btn-secondary">Отменить</button>
+        <div class="rental-actions">
+            <p class="pending-message">Ожидает оплаты</p>
+            <div class="action-buttons">
+                <button id="pay-rental-btn" class="btn-primary">Оплатить</button>
+                <button id="cancel-rental-btn" class="btn-secondary">Отменить</button>
+            </div>
         </div>
         {% endif %}
     </div>

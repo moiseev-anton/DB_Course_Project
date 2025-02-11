@@ -7,25 +7,48 @@
         <h2>Регистрация</h2>
 
         {% if error %}
-            <p class="error">{{ error }}</p>
+        <div class="error-message">{{ error }}</div>
         {% endif %}
 
-        <form method="post" action="{{ url_for('register') }}">
-            <label for="name">Имя:</label>
-            <input type="text" id="name" name="name" required>
+        <form method="post" action="{{ url_for('register') }}" class="auth-form">
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name"
+                       class="{% if errors.name %}error{% endif %}"
+                       required minlength="2" maxlength="50">
+                {% if errors.name %}<span class="error-message">{{ errors.name }}</span>{% endif %}
+            </div>
 
-            <label for="surname">Фамилия:</label>
-            <input type="text" id="surname" name="surname" required>
+            <div class="form-group">
+                <label for="surname">Фамилия:</label>
+                <input type="text" id="surname" name="surname"
+                       class="{% if errors.surname %}error{% endif %}"
+                       required minlength="2" maxlength="50">
+                {% if errors.surname %}<span class="error-message">{{ errors.surname }}</span>{% endif %}
+            </div>
 
-            <label for="phone">Телефон:</label>
-            <input type="text" id="phone" name="phone" required>
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone"
+                       class="{% if errors.phone %}error{% endif %}"
+                       pattern="\+7\d{10}" required>
+                {% if errors.phone %}<span class="error-message">{{ errors.phone }}</span>{% endif %}
+            </div>
 
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" required>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password"
+                       class="{% if errors.password %}error{% endif %}"
+                       required minlength="6">
+                {% if errors.password %}<span class="error-message">{{ errors.password }}</span>{% endif %}
+            </div>
 
-            <button type="submit">Зарегистрироваться</button>
+            <button type="submit" class="btn-auth">Зарегистрироваться</button>
         </form>
 
-        <p>Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a></p>
+        <div class="auth-links">
+            Уже есть аккаунт?
+            <a href="{{ url_for('login') }}" class="auth-link">Войти</a>
+        </div>
     </div>
 {% endblock %}
