@@ -5,31 +5,29 @@
 <div class="analytics-container">
     <!-- Фильтры -->
     <div class="filters">
-        <form method="get" action="/admin/analytics">
-            <div class="date-filters">
-                <label>
-                    Начало:
-                    <input type="date"
-                           name="start_date"
-                           value="{{ date_range.start_date }}"
-                           max="{{ date_range.end_date }}">
-                </label>
+    <form method="get" action="/admin/analytics" class="filter-form">
+        <div class="filter-group">
+            <label for="start_date">Начало:</label>
+            <input type="date" id="start_date" name="start_date"
+                   value="{{ date_range.start_date }}"
+                   max="{{ date_range.end_date }}"
+                   class="filter-input">
+        </div>
 
-                <label>
-                    Конец:
-                    <input type="date"
-                           name="end_date"
-                           value="{{ date_range.end_date }}"
-                           min="{{ date_range.start_date }}"
-                           max="{{ today.isoformat() }}">
-                </label>
+        <div class="filter-group">
+            <label for="end_date">Конец:</label>
+            <input type="date" id="end_date" name="end_date"
+                   value="{{ date_range.end_date }}"
+                   min="{{ date_range.start_date }}"
+                   max="{{ today.isoformat() }}"
+                   class="filter-input">
+        </div>
 
-                <button type="submit" class="btn-filter">
-                    <i class="fas fa-filter"></i> Применить
-                </button>
-            </div>
-        </form>
-    </div>
+        <button type="submit" class="btn btn-filter">
+            <i class="fas fa-filter"></i> Применить
+        </button>
+    </form>
+</div>
 
     <!-- Основные метрики -->
     <div class="metrics-grid">

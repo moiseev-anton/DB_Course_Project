@@ -847,12 +847,19 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Сетка фич */
-.features-grid {
+/* Сетка макета */
+.layout-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin: 3rem 0;
+    align-items: start;
+}
+
+/* Колонка фич */
+.features-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .feature-card {
@@ -885,8 +892,6 @@ body {
 
 /* Секция аутентификации */
 .auth-section {
-    max-width: 500px;
-    margin: 0 auto;
     padding: 2rem;
     background: white;
     border-radius: 8px;
@@ -972,6 +977,21 @@ body {
 .auth-link:hover {
     color: #2980b9;
     text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .layout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-column {
+        order: 2;
+    }
+
+    .auth-section {
+        order: 1;
+    }
 }
 
 
