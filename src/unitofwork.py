@@ -43,15 +43,13 @@ class UnitOfWork(IUnitOfWork):
     async def __aenter__(self):
         self.session: AsyncSession = self.async_session_factory()
 
-        # Создаем репозитории для всех моделей
+        # Репозитории для всех моделей
         self.users = UsersRepository(self.session)
         self.scooters = ScootersRepository(self.session)
         self.rentals = RentalsRepository(self.session)
         self.payments = PaymentsRepository(self.session)
         self.locations = LocationsRepository(self.session)
-        return (
-            self  # Возвращаем сам UnitOfWork для использования в контекстном менеджере
-        )
+        return self  # Возвращаем экземпляр UnitOfWork для использования в контекстном менеджере
 
     async def __aexit__(self, *args):
         # Откатить транзакцию, если ошибка, и закрыть сессию

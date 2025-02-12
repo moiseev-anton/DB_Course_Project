@@ -22,7 +22,7 @@ services:
     networks:
       - scooter_network
     volumes:
-      - .:/src # бинд-маунт (отключать при деплое)
+      - ./src:/app # бинд-маунт (отключать при деплое)
 
 networks:
   scooter_network:
