@@ -12,4 +12,3 @@ async def index(request: Request):
     if request.state.user:
         return RedirectResponse(url="/rent/current_rental", status_code=303)
     return RedirectResponse(url="/login", status_code=303)
-

@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from config import settings
-from models import User # noqa
+from models import User  # noqa
 from database import Base
 
 config = context.config
@@ -15,7 +15,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Миграции будем проводить через синхронный драйвер psycopg2
-config.set_main_option('sqlalchemy.url', settings.DATABASE_URL_psycopg2)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_psycopg2)
 
 
 target_metadata = Base.metadata
@@ -59,9 +59,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

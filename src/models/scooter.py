@@ -21,8 +21,12 @@ class Scooter(Base):
     model = Column(String(100), nullable=False)
     serial_number = Column(String(50), nullable=False, unique=True)
     status = Column(Enum(ScooterStatus), default=ScooterStatus.AVAILABLE)
-    tariff_id = Column(Integer, ForeignKey("tariffs.id", ondelete="SET NULL"), nullable=True)
-    location_id = Column(Integer, ForeignKey("locations.id", ondelete="SET NULL"), nullable=True)
+    tariff_id = Column(
+        Integer, ForeignKey("tariffs.id", ondelete="SET NULL"), nullable=True
+    )
+    location_id = Column(
+        Integer, ForeignKey("locations.id", ondelete="SET NULL"), nullable=True
+    )
     battery_level = Column(Float, default=100.0)
     created_at = Column(DateTime, server_default=text("TIMEZONE('utc', now())"))
     updated_at = Column(DateTime, server_default=text("TIMEZONE('utc', now())"))

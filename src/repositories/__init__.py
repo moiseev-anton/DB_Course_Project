@@ -5,9 +5,9 @@ from .payment_repository import PaymentsRepository
 from .location_repository import LocationsRepository
 
 __all__ = [
-    'UsersRepository',
-    'ScootersRepository',
-    'RentalsRepository',
-    'PaymentsRepository',
-    'LocationsRepository'
+    "UsersRepository",
+    "ScootersRepository",
+    "RentalsRepository",
+    "PaymentsRepository",
+    "LocationsRepository",
 ]

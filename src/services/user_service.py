@@ -3,7 +3,14 @@ from uuid import UUID
 
 from passlib.context import CryptContext
 
-from schemas import UserRegister, UserUpdate, UserLogin, UserCreate, UserDisplay, PasswordChange
+from schemas import (
+    UserRegister,
+    UserUpdate,
+    UserLogin,
+    UserCreate,
+    UserDisplay,
+    PasswordChange,
+)
 from unitofwork import IUnitOfWork
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -12,12 +19,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class UserService:
 
     async def authenticate_user(
-            self, uow: IUnitOfWork, creds: UserLogin
+        self, uow: IUnitOfWork, creds: UserLogin
     ) -> UserDisplay:
         async with uow:
             user = await uow.users.get_one(phone=creds.phone, is_active=True)
             if not user or not await self.verify_password(
-                    creds.password, user.password_hash
+                creds.password, user.password_hash
             ):
                 raise ValueError("Неверный телефон или пароль")
             return UserDisplay.model_validate(user)
@@ -64,7 +71,7 @@ class UserService:
 
     @staticmethod
     async def update_user(
-            uow: IUnitOfWork, user_id: UUID, user: UserUpdate
+        uow: IUnitOfWork, user_id: UUID, user: UserUpdate
     ) -> UserDisplay:
         async with uow:
             existing_user = await uow.users.get_one(phone=user.phone)
@@ -77,7 +84,7 @@ class UserService:
             return UserDisplay.model_validate(updated_user)
 
     async def change_password(
-            self, uow: IUnitOfWork, user_id: UUID, pswd: PasswordChange
+        self, uow: IUnitOfWork, user_id: UUID, pswd: PasswordChange
     ) -> UserDisplay:
         async with uow:
             user = await uow.users.get_one(id=user_id)

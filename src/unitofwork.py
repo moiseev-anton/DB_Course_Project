@@ -3,12 +3,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from database import async_session_maker
-from repositories import (UsersRepository,
-                              ScootersRepository,
-                              RentalsRepository,
-                              PaymentsRepository,
-                              LocationsRepository
-                              )
+from repositories import (
+    UsersRepository,
+    ScootersRepository,
+    RentalsRepository,
+    PaymentsRepository,
+    LocationsRepository,
+)
 
 
 class IUnitOfWork(ABC):
@@ -20,24 +21,19 @@ class IUnitOfWork(ABC):
     locations: LocationsRepository
 
     @abstractmethod
-    def __init__(self):
-        ...
+    def __init__(self): ...
 
     @abstractmethod
-    async def __aenter__(self):
-        ...
+    async def __aenter__(self): ...
 
     @abstractmethod
-    async def __aexit__(self, *args):
-        ...
+    async def __aexit__(self, *args): ...
 
     @abstractmethod
-    async def commit(self):
-        ...
+    async def commit(self): ...
 
     @abstractmethod
-    async def rollback(self):
-        ...
+    async def rollback(self): ...
 
 
 class UnitOfWork(IUnitOfWork):
@@ -53,7 +49,9 @@ class UnitOfWork(IUnitOfWork):
         self.rentals = RentalsRepository(self.session)
         self.payments = PaymentsRepository(self.session)
         self.locations = LocationsRepository(self.session)
-        return self  # Возвращаем сам UnitOfWork для использования в контекстном менеджере
+        return (
+            self  # Возвращаем сам UnitOfWork для использования в контекстном менеджере
+        )
 
     async def __aexit__(self, *args):
         # Откатить транзакцию, если ошибка, и закрыть сессию

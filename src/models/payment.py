@@ -5,7 +5,7 @@ from database import Base
 
 
 class Payment(Base):
-    __tablename__ = 'payments'
+    __tablename__ = "payments"
 
     id = Column(Integer, primary_key=True, index=True)
     rental_id = Column(Integer, ForeignKey("rentals.id"), unique=True, nullable=False)
@@ -13,4 +13,3 @@ class Payment(Base):
     payment_time = Column(DateTime, server_default=text("TIMEZONE('utc', now())"))
 
     rental = relationship("Rental", backref="payment", uselist=False)
-

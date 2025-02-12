@@ -6,8 +6,8 @@ from unitofwork import IUnitOfWork
 
 class LocationService:
     async def get_all_locations(
-            self,
-            uow: IUnitOfWork,
+        self,
+        uow: IUnitOfWork,
     ) -> List[LocationDisplay]:
         async with uow:
             locations = await uow.locations.get_all()

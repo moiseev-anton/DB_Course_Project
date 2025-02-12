@@ -25,5 +25,3 @@ class AuthMiddleware(BaseHTTPMiddleware):
         # Продолжаем обработку запроса
         response = await call_next(request)
         return response
-
-

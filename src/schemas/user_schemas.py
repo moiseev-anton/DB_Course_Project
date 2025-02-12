@@ -22,11 +22,11 @@ class UserRegister(BaseModel):
 
     @classmethod
     def as_form(
-            cls,
-            name: str = Form(...),
-            surname: str = Form(...),
-            phone: str = Form(...),
-            password: str = Form(...)
+        cls,
+        name: str = Form(...),
+        surname: str = Form(...),
+        phone: str = Form(...),
+        password: str = Form(...),
     ) -> "UserRegister":
         return cls(name=name, surname=surname, phone=phone, password=password)
 
@@ -49,7 +49,7 @@ class UserUpdate(BaseModel):
     ) -> "UserUpdate":
         return cls(name=name, surname=surname, phone=phone)
 
-    @field_validator('phone')
+    @field_validator("phone")
     def validate_phone(cls, v):
         if not re.match(r"^\+7\d{10}$", v):
             raise ValueError("Некорректный формат телефона")
@@ -74,10 +74,10 @@ class PasswordChange(BaseModel):
     new_password: str
     confirm_password: str
 
-    @field_validator('confirm_password')
+    @field_validator("confirm_password")
     def passwords_match(cls, v, values):
-        if 'new_password' in values.data and v != values.data['new_password']:
-            raise ValueError('Пароли не совпадают')
+        if "new_password" in values.data and v != values.data["new_password"]:
+            raise ValueError("Пароли не совпадают")
         return v
 
     @classmethod
@@ -85,10 +85,10 @@ class PasswordChange(BaseModel):
         cls,
         old_password: str = Form(...),
         new_password: str = Form(...),
-        confirm_password: str = Form(...)
+        confirm_password: str = Form(...),
     ) -> "PasswordChange":
         return cls(
             old_password=old_password,
             new_password=new_password,
-            confirm_password=confirm_password
+            confirm_password=confirm_password,
         )

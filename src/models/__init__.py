@@ -5,5 +5,14 @@ from .payment import Payment
 from .location import Location
 from .tariff import Tariff
 
-__all__ = ['User', 'UserRole', 'Scooter', 'ScooterStatus', 'Rental', 'RentalStatus', 'Payment', 'Location', 'Tariff',]
-
+__all__ = [
+    "User",
+    "UserRole",
+    "Scooter",
+    "ScooterStatus",
+    "Rental",
+    "RentalStatus",
+    "Payment",
+    "Location",
+    "Tariff",
+]

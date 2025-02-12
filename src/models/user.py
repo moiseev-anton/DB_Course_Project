@@ -27,4 +27,3 @@ class User(Base):
     is_active = Column(Boolean(), default=True, nullable=False)
 
     rentals = relationship("Rental", backref="user")
-

@@ -17,7 +17,7 @@ app.add_middleware(
     session_cookie="session",
     same_site="lax",  # Защита от CSRF
     https_only=False,  # Включить True для продакшена
-    max_age=86400  # Время жизни cookie (24 часа)
+    max_age=86400,  # Время жизни cookie (24 часа)
 )
 
 app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
