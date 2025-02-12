@@ -45,10 +45,7 @@ class UserUpdate(BaseModel):
 
     @classmethod
     def as_form(
-        cls,
-        name: str = Form(...),
-        surname: str = Form(...),
-        phone: str = Form(...)
+        cls, name: str = Form(...), surname: str = Form(...), phone: str = Form(...)
     ) -> "UserUpdate":
         return cls(name=name, surname=surname, phone=phone)
 
