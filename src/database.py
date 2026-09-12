@@ -1,7 +1,6 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase, Session
-from contextlib import asynccontextmanager, contextmanager
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from config import settings
 
@@ -22,31 +21,11 @@ async_engine = create_async_engine(
 )
 
 async_session_maker = async_sessionmaker(
-    async_engine,
-    expire_on_commit=False,
-    class_=AsyncSession
+    async_engine, expire_on_commit=False, class_=AsyncSession
 )
 
 
-# Базовый класс для моделей
 class Base(DeclarativeBase):
+    """Общая база ORM-моделей и метаданных для Alembic."""
+
     pass
-
-
-# Для синхронной сессии
-@contextmanager
-def get_sync_db():
-    """Контекстный менеджер синхронной сессии с БД."""
-    db: Session = session_maker()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-# Для асинхронной сессии
-@asynccontextmanager
-async def get_async_db():
-    """Контекстный менеджер для асинхронной сессии с БД."""
-    async with async_session_maker() as db:  # async_session автоматически управляет сессией
-        yield db

@@ -10,6 +10,7 @@ from middleware import AuthMiddleware
 # Инициализация FastAPI
 app = FastAPI()
 
+# middleware для аутентификации и авторизации
 app.add_middleware(AuthMiddleware)
 app.add_middleware(
     SessionMiddleware,

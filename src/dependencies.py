@@ -17,7 +17,6 @@ from services import (
     UserService,
     LocationService,
     RentalService,
-    # PaymentService,
 )
 from unitofwork import IUnitOfWork, UnitOfWork
 
@@ -28,7 +27,6 @@ UserServiceDep = Annotated[UserService, Depends(UserService)]
 ScooterServiceDep = Annotated[ScooterService, Depends(ScooterService)]
 LocationServiceDep = Annotated[LocationService, Depends(LocationService)]
 RentalServiceDep = Annotated[RentalService, Depends(RentalService)]
-# PaymentServiceDep = Annotated[PaymentService, Depends(PaymentService)]
 
 # Forms
 LoginForm = Annotated[UserLogin, Depends(UserLogin.as_form)]
